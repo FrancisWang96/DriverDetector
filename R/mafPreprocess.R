@@ -14,7 +14,7 @@
 
 mafPreprocess <- function(maf, output_file = TRUE){
 
-  cat('Loading maf...')
+  cat('Loading maf ... ')
 
   if(is.character(maf)){
     maf <- data.table::fread(maf)
@@ -23,7 +23,7 @@ mafPreprocess <- function(maf, output_file = TRUE){
 
   # ensure necessary elements in maf file
   # Hugo_Symbol
-  cat('Check maf elements...')
+  cat('Check maf elements ... ')
 
   if (!"Hugo_Symbol" %in% names(maf)){
     if(!"Gene" %in% names(maf) & !"gene" %in% names(maf)){
@@ -49,24 +49,10 @@ mafPreprocess <- function(maf, output_file = TRUE){
   }
   cat('success!\n')
 
-  cat('Process variant classification...')
-  dict <- dplyr::tibble(Variant_Classification = c("Silent","Synonymous","Missense",
-          "Missense_Mutation","Nonsense","Nonsense_Mutation","Nonstop_Mutation",
-          "Read-through","Frame_Shift_Del","Frame_Shift_Ins","In_Frame_Del","In_Frame_Ins",
-          "Splice","Splice_Region","Splice_Site","Splice_Site_Del","Splice_Site_DNP",
-          "Splice_Site_Ins","Splice_Site_ONP","Splice_Site_SNP","Start_Codon_Del",
-          "Start_Codon_DNP","Start_Codon_Ins","Start_Codon_ONP","Stop_Codon_Del",
-          "Stop_Codon_DNP","Stop_Codon_Ins","Translation_Start_Site","De_novo_Start",
-          "De_novo_Start_InFrame","De_novo_Start_OutOfFrame","IGR","Intron","3'Flank",
-          "3'Promoter","3'UTR","3'-UTR","5'Flank","5'-Flank","5'Promoter","5'UTR","5'-UTR",
-          "downstream","miRNA","NCSD","Non-coding_Transcript","Promoter","RNA","upstream",
-          "upstream;downstream"), effect = c("silent","silent","nonsilent","nonsilent",
-          "null","null","null","null","null","null","null","null","null","null","null",
-          "null","null","null","null","null","null","null","null","null","null","null",
-          "null","null","null","null","null","noncoding","noncoding","noncoding","noncoding",
-          "noncoding","noncoding","noncoding","noncoding","noncoding","noncoding","noncoding",
-          "noncoding","noncoding","noncoding","noncoding","noncoding","noncoding","noncoding",
-          "noncoding"))
+  cat('Process variant classification ... ')
+
+  dict_dir <- system.file("extdata", "mutation_type_dictionary_file.txt", package = "DriverGenePathway")
+  dict <- data.table::fread(dict_dir)
 
   flag_num <- match(toupper(maf$Variant_Classification),
                     toupper(dict$Variant_Classification),nomatch =nrow(dict)+1)
@@ -96,7 +82,7 @@ mafPreprocess <- function(maf, output_file = TRUE){
       dir.create('DriverGenePathway_output')
       }
     setwd('DriverGenePathway_output')
-    write.table(maf,"preprocessed_maf.txt", sep = "\t", quote = F, row.names = F)
+    utils::write.table(maf,"preprocessed_maf.txt", sep = "\t", quote = F, row.names = F)
     setwd("..")
   }
 

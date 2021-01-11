@@ -18,21 +18,8 @@ Suggests:
     testthat
 BiocViews: Coverage, DriverMutation, SomaticMutation
 Imports:
-    ggplot2,
-    ggrepel,
-    VennDiagram,
-    caret,
     data.table,
-    dplyr,
-    genalg,
-    kernlab,
-    marray,
-    MASS,
-    plyr,
-    stringr,
-    readxl,
-    tidyverse,
-    pheatmap
+    utils
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
