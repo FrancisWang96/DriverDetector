@@ -4,18 +4,12 @@ Title: DriverGenePathway: Search significant genes triggering cancer using diffe
 Version: 0.99.0
 Date: 2018-07-20
 Authors@R: c(
-    person("Xiaolu","Xu", email = "lu891111@mail.dlut.edu.cn", role = "cre"),
-    person("Pan", "Qin", email = "qp112cn@dlut.edu.cn", role = "aut"),
+    person("Pan", "Qin", email = "qp112cn@dlut.edu.cn", role = "cre"),
     person("Hong", "Gu", email = "guhong@dlut.edu.cn", role = "cph"),
     person("Zeyuan", "Wang", email = "1154094410@mail.dlut.edu.cn", role = "aut"))
-Maintainer: Xiaolu Xu <lu891111@mail.dlut.edu.cn>
+Maintainer: Zeyuan Wang <1154094410@mail.dlut.edu.cn>
 Description: This R package identifies significant genes or gene sets with somatic mutation data.
-    It provides various methods, including preprocessing for input raw files, and 3 different specific gene
-    detecting functions, i.e. 2D projection, sigGenes, and AWRMP. Specifically, it could search significant
-    genes with different hypothesis testing methods, such as binomial distribution test,
-    beta binomial distribution test, Fisher combined P-value test, likelihood ratio test
-    and convolution test. To find a driver gene set, it implements the AWRMP method that models
-    an optimal submatrix function with the coverage and exclusivity, and solves it with genetic algorithm.
+    It provides various methods, including preprocessing for input raw files, and 3 different specific gene detecting functions, i.e. 2D projection, sigGenes, and AWRMP. Specifically, it could search significant genes with different hypothesis testing methods, such as binomial distribution test, beta binomial distribution test, Fisher combined P-value test, likelihood ratio test and convolution test. To find a driver gene set, it implements the AWRMP method that models an optimal submatrix function with the coverage and exclusivity, and solves it with genetic algorithm.
 Depends: R (>= 3.5.0)
 Suggests:
     RUnit,
@@ -38,10 +32,9 @@ Imports:
     stringr,
     readxl,
     tidyverse,
-    ggcorrplot,
     pheatmap
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

@@ -2,7 +2,7 @@
 title: "`DriverGenePathway` vignette"
 subtitle: "An R package for identifying driver genes and pathways using covariates"
 author: 
-      Xiaolu Xu
+      Pan Qin
 
 date: "`r Sys.Date()`"
 # output: rmarkdown::html_vignette
