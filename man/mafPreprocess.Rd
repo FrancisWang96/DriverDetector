@@ -4,12 +4,14 @@
 \alias{mafPreprocess}
 \title{Preprocess maf}
 \usage{
-mafPreprocess(maf, output_file = TRUE)
+mafPreprocess(maf, output_file = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{maf}{Mutation Annotation Format, can be whether an R data frame or the path of a txt file.}
 
 \item{output_file}{Determine whether to export the preprocessed maf as a txt file.}
+
+\item{quiet}{Whether to show notes during processing.}
 }
 \value{
 The preprocessed maf.

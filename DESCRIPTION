@@ -19,7 +19,9 @@ Suggests:
 BiocViews: Coverage, DriverMutation, SomaticMutation
 Imports:
     data.table,
-    utils
+    utils,
+    dplyr,
+    stringr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
