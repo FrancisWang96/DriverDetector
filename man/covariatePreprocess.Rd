@@ -4,7 +4,12 @@
 \alias{covariatePreprocess}
 \title{Preprocess covariate file}
 \usage{
-covariatePreprocess(covariate, maf = NULL, output_file = TRUE, quiet = FALSE)
+covariatePreprocess(
+  covariate = NULL,
+  maf = NULL,
+  output_file = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{covariate}{Covariate file, can be whether an R data frame or the path of a txt file.}

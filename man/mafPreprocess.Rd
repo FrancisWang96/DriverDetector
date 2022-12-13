@@ -4,7 +4,7 @@
 \alias{mafPreprocess}
 \title{Preprocess maf}
 \usage{
-mafPreprocess(maf, output_file = TRUE, quiet = FALSE)
+mafPreprocess(maf = NULL, output_file = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{maf}{Mutation Annotation Format, can be whether an R data frame or the path of a txt file.}

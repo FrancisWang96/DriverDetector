@@ -4,10 +4,15 @@
 \alias{coveragePreprocess}
 \title{Preprocess coverage file}
 \usage{
-coveragePreprocess(coverage, maf = NULL, output_file = TRUE, quiet = FALSE)
+coveragePreprocess(
+  coverage = NULL,
+  maf = NULL,
+  output_file = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
-\item{coverage}{coverage file, can be whether an R data frame or the path of a txt file.}
+\item{coverage}{Coverage file, can be whether an R data frame or the path of a txt file.}
 
 \item{maf}{Mutation Annotation Format, can be whether an R data frame or the path of a txt file.}
 
