@@ -13,7 +13,9 @@
 #' maf <- mafPreprocess(laml_maf)
 #' @export
 
-mafPreprocess <- function(maf, output_file = TRUE, quiet = FALSE){
+mafPreprocess <- function(maf = NULL, output_file = TRUE, quiet = FALSE){
+
+  old_symbol = NULL
 
   if(!quiet){cat('Loading maf ... ')}
 
@@ -90,14 +92,16 @@ mafPreprocess <- function(maf, output_file = TRUE, quiet = FALSE){
 
     maf_to_be_corrected$old_symbol <- maf_to_be_corrected$Hugo_Symbol
     maf_to_be_corrected$Hugo_Symbol <- ''
+
     maf_original_rows <- nrow(maf)
     maf_removed_rows <- sum(!maf_to_be_corrected$old_symbol%in%hgnc$old_symbol)
+    maf_can_be_corrected <- maf_to_be_corrected[which(maf_to_be_corrected$old_symbol%in%hgnc$old_symbol),]
 
-    flag <- match(maf_to_be_corrected$old_symbol, hgnc$old_symbol)
-    maf_to_be_corrected$Hugo_Symbol <- hgnc$symbol[flag]
+    flag <- match(maf_can_be_corrected$old_symbol, hgnc$old_symbol)
+    maf_can_be_corrected$Hugo_Symbol <- hgnc$symbol[flag]
 
-    maf_to_be_corrected <- maf_to_be_corrected[!maf_to_be_corrected$Hugo_Symbol=='',]
-    maf_corrected <- subset(maf_to_be_corrected, select = -ncol(maf_to_be_corrected))
+    maf_corrected <- subset(maf_can_be_corrected, select = -old_symbol)
+    rm(maf_can_be_corrected,maf_to_be_corrected)
     maf <- rbind(maf_right, maf_corrected)
 
     if(!quiet){cat('success!\n')}
@@ -105,10 +109,10 @@ mafPreprocess <- function(maf, output_file = TRUE, quiet = FALSE){
     if(maf_removed_rows>0){
       if(maf_removed_rows==1){
         if(!quiet){message(sprintf("NOTE: %d/%d Hugo_Symbol is not standard or alias symbol in the HGNC database and has been removed\n",
-                        maf_removed_rows, maf_original_rows))}
+                                   maf_removed_rows, maf_original_rows))}
       }else{
         if(!quiet){message(sprintf("NOTE: %d/%d Hugo_Symbols are not standard or alias symbol in the HGNC database and have been removed\n",
-                        maf_removed_rows, maf_original_rows))}
+                                   maf_removed_rows, maf_original_rows))}
       }
     }
 

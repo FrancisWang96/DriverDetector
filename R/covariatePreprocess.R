@@ -15,7 +15,10 @@
 #' covariate <- covariatePreprocess(covariate, laml_maf)
 #' @export
 
-covariatePreprocess <- function(covariate, maf = NULL, output_file = TRUE, quiet = FALSE){
+covariatePreprocess <- function(covariate = NULL, maf = NULL, output_file = TRUE, quiet = FALSE){
+
+  old_symbol = NULL
+  num = NULL
 
   if(!quiet){cat('Loading covariate ... ')}
 
@@ -51,15 +54,34 @@ covariatePreprocess <- function(covariate, maf = NULL, output_file = TRUE, quiet
 
     covariate_to_be_corrected$old_symbol <- covariate_to_be_corrected$Hugo_Symbol
     covariate_to_be_corrected$Hugo_Symbol <- ''
+
     covariate_original_rows <- nrow(covariate)
     covariate_removed_rows <- sum(!covariate_to_be_corrected$old_symbol%in%hgnc$old_symbol)
+    covariate_can_be_corrected <- covariate_to_be_corrected[which(covariate_to_be_corrected$old_symbol%in%hgnc$old_symbol),]
 
-    flag <- match(covariate_to_be_corrected$old_symbol, hgnc$old_symbol)
-    covariate_to_be_corrected$Hugo_Symbol <- hgnc$symbol[flag]
+    flag <- match(covariate_can_be_corrected$old_symbol, hgnc$old_symbol)
+    covariate_can_be_corrected$Hugo_Symbol <- hgnc$symbol[flag]
 
-    covariate_to_be_corrected <- covariate_to_be_corrected[!covariate_to_be_corrected$Hugo_Symbol=='',]
-    covariate_corrected <- subset(covariate_to_be_corrected, select = -ncol(covariate_to_be_corrected))
-    covariate <- rbind(covariate_right, covariate_corrected)
+    covariate_corrected <- subset(covariate_can_be_corrected, select = -old_symbol)
+    rm(covariate_can_be_corrected,covariate_to_be_corrected)
+    covariate <- rbind(covariate_right,covariate_corrected)
+
+    temp <- as.data.frame(table(covariate$Hugo_Symbol))
+    gene_more <- as.vector(temp$Var1[which(temp$Freq>1)])
+    if(length(gene_more)>0){
+      covariate_corrected_right_gene <- covariate[which(!covariate$Hugo_Symbol%in%gene_more),]
+      covariate_corrected_not_right_gene <- covariate[which(covariate$Hugo_Symbol%in%gene_more),]
+      covariate_corrected_not_right_gene$num <- 0
+      for (i in gene_more) {
+        flag <- which(covariate_corrected_not_right_gene$Hugo_Symbol==i)
+        temp <- covariate_corrected_not_right_gene[which(covariate_corrected_not_right_gene$Hugo_Symbol==i),2:(ncol(covariate_corrected_not_right_gene)-1)]
+        temp$select <- rowSums(is.na(temp))
+        covariate_corrected_not_right_gene$num[flag[which(rank(temp$select)==1)]] <- 1
+        }
+      covariate_corrected_not_right_gene <- covariate_corrected_not_right_gene[covariate_corrected_not_right_gene$num==1,]
+      covariate_corrected_not_right_gene <- subset(covariate_corrected_not_right_gene,select = -num)
+      covariate <- rbind(covariate_corrected_right_gene, covariate_corrected_not_right_gene)
+    }
 
     if(!quiet){cat('success!\n')}
 
@@ -96,7 +118,7 @@ covariatePreprocess <- function(covariate, maf = NULL, output_file = TRUE, quiet
     setwd("..")
   }
 
-  if(!quiet){cat('Preprocess of covariate finishes.')}
+  if(!quiet){cat('Preprocess of covariate finishes.\n')}
 
   return(covariate)
 
